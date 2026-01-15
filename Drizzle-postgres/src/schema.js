@@ -13,6 +13,7 @@ export const users = pgTable("users", {
   id: serial("id").primaryKey(),
   name: varchar("name", { length: 100 }).notNull(),
   email: varchar("email", { length: 150 }).notNull().unique(),
+  salary: integer("salary").notNull(),
   age: integer("age").notNull(), // used for CHECK
   status: text("status").default("active"), // DEFAULT
 

@@ -19,11 +19,20 @@ import {
 
 async function main() {
 
-  // // INSERT
-  // // await db.insert(users).values({
-  // //   name: "Anshul",
-  // //   email: "anshul@gmail.com",
-  // });
+  //  // INSERT
+  //   await db.insert(users).values(
+  //   { name: "Anshul", email: "anshul@gmail.com", salary: 3500 },
+  //   { name: "Rohit",  email: "rohit@gmail.com",  salary: 4000 },
+  //   { name: "Amit",   email: "amit@gmail.com",   salary: 2800 },
+  //   { name: "Neha",   email: "neha@gmail.com",   salary: 3200 },
+  //   { name: "Priya",  email: "priya@gmail.com",  salary: 4500 },
+  //   { name: "Suresh", email: "suresh@gmail.com", salary: 5000 },
+  //   { name: "Kiran",  email: "kiran@gmail.com",  salary: 2600 },
+  //   { name: "Pooja",  email: "pooja@gmail.com",  salary: 3900 },
+  //   { name: "Vikas",  email: "vikas@gmail.com",  salary: 3100 },
+  //   );
+
+  // console.log("✅ 10 users inserted successfully");
 
   // // SELECT
   // const result = await db.select().from(users);
@@ -198,69 +207,69 @@ async function main() {
 
    /** SUM  */
 
-const totalUsers = await db
-  .select({ total: count() })
-  .from(users);
+// const totalUsers = await db
+//   .select({ total: count() })
+//   .from(users);
 
-console.log("COUNT (total users):", totalUsers);
+// console.log("COUNT (total users):", totalUsers);
 
- /** AVG  */  
+  /** AVG  */  
 
- const avgUserId = await db
+  const avgUserId = await db
   .select({ averageId: avg(users.id)})
   .from(users);
 
-console.log("AVG (average user id", avgUserId);
+ console.log("AVG (average user id", avgUserId);
 
-/** MIN/MAX */
+ /** MIN/MAX */
 
- const minmaxUserId = await db
+  const minmaxUserId = await db
+    .select({
+     minAge: min(users.id),
+     maxAge: max(users.id),
+   })
+    .from(users);
+
+  console.log("MIN/MAX (minimum/maximum user id", minmaxUserId);
+
+ /** GROUP BY Name */ 
+
+ const groupByName = await db
    .select({
-    minAge: min(users.id),
-    maxAge: max(users.id),
-  })
-   .from(users);
-
- console.log("MIN/MAX (minimum/maximum user id", minmaxUserId);
-
-/** GROUP BY Name */ 
-
-const groupByName = await db
-  .select({
     name: users.name,
-    totalUsers: count(),
-  })
-  .from(users)
-  .groupBy(users.name);
+     totalUsers: count(),
+   })
+   .from(users)
+   .groupBy(users.name);
 
-console.log("GROUP BY name:", groupByName);   
+ console.log("GROUP BY name:", groupByName);   
 
-/** HAVING */
+ /** HAVING */
 
-const havingData = await db
-  .select({
-    name: users.name,
-    totalUsers: count(),
-  })
-  .from(users)
-  .groupBy(users.name)
-  .having(gt(count(), 1));
+ const havingData = await db
+   .select({
+     name: users.name,
+     totalUsers: count(),
+   })
+   .from(users)
+   .groupBy(users.name)
+   .having(gt(count(), 1));
 
-console.log("HAVING:", havingData);
+ console.log("HAVING:", havingData);
 
-/** FINAL COMBINED */
+ /** FINAL COMBINED */
 
 const finalQuery = await db
-  .select({
-    name: users.name,
-    avgUserId: avg(users.id),
+   .select({
+     name: users.name,
+     avgUserId: avg(users.id),
   })
-  .from(users)
-  .where(gt(users.id, 18))
-  .groupBy(users.name)
-  .having(gt(avg(users.id), 25));
+   .from(users)
+   .where(gt(users.id, 18))
+   .groupBy(users.name)
+   .having(gt(avg(users.id), 25));
 
-console.log("FINAL QUERY:", finalQuery);
+ console.log("FINAL QUERY:", finalQuery);
 
 }
 
